@@ -5,17 +5,19 @@ https://gist.github.com/dpaluy/74258794f7930401cc27262e0ea794dd
 
 This repo contains a browser-console script that rebuilds a downloadable PDF from the page images rendered by the Google Drive PDF viewer.
 
+The current version has been tested with this workflow and uses per-page image dimensions so mixed portrait and landscape documents are handled correctly.
+
 It is useful when a PDF is visible in the browser but the normal download option is unavailable, limited, or inconvenient, and the viewer has already rendered each page as an image.
 
 ## Quick Use
 
 1. Open the PDF in the Google Drive viewer.
-2. Scroll through the document until all pages you want have been rendered.
+2. Zoom in and scroll through the document until all pages you want have been rendered at full resolution.
 3. Open Developer Tools and switch to the Console tab.
 4. Paste the contents of [`script.js`](./script.js) into the console and run it.
 5. Wait for the script to finish. Your browser will download `download.pdf`.
 
-That is the full workflow. The important part is step 2: the script can only capture pages that already exist in the DOM as rendered `blob:` images.
+That is the full workflow. The important part is step 2: the script can only capture pages that already exist in the DOM as rendered `blob:` images, and output quality depends on the resolution currently rendered by the viewer.
 
 ## What the Script Does
 
@@ -75,8 +77,10 @@ If any of those assumptions fail, the script may do nothing or produce an incomp
 Before using or modifying the script, keep these limits in mind:
 
 - Only rendered pages are captured. If you do not scroll far enough, missing pages will not appear in the output.
+- For best output quality, pages should be rendered at full resolution before running the script. In practice, that usually means zooming in and scrolling through the entire document first.
 - Output quality is limited by the viewer's rendered image resolution.
-- The output PDF is image-based, so searchable text, links, selectable text, and original PDF structure are not preserved.
+- The output PDF is image-based, so searchable text, links, selectable text, original PDF structure, table recognition, and autofill are not preserved.
+- If your PDF viewer applies OCR, copied text may sometimes work, but it will usually be less reliable than text copied from the original PDF.
 - If the viewer displays a rotated page incorrectly, the output will preserve that rendered result.
 - If the site changes its DOM structure and no longer uses `blob:` images, the script will stop working until updated.
 - Some sites may block the external `jsPDF` CDN or use security policies that prevent this script from running.
@@ -216,7 +220,7 @@ Possible causes:
 
 ### Some pages are missing
 
-You almost certainly did not scroll far enough before running the script, or the viewer unloaded earlier pages while you were navigating.
+You almost certainly did not scroll far enough before running the script, the viewer unloaded earlier pages while you were navigating, or some pages never rendered at full resolution before capture.
 
 ### The PDF downloads but quality is poor
 
@@ -224,8 +228,8 @@ That usually means the viewer only rendered low-resolution page images. The scri
 
 ### The output has no searchable text
 
-Expected. This script creates a PDF from images, not from the original PDF text layer.
+Expected. This script creates a PDF from images, not from the original PDF text layer. OCR-based copying may partially work in some viewers, but it is typically inconsistent.
 
 ## Disclaimer
 
-This script is provided for educational and archival use on content you are authorized to access and copy. Review the rules and obligations that apply to the documents and services you use.
+This script is provided for educational and archival use on content you are authorized to access and copy. Do not use it to infringe copyright, bypass permissions unlawfully, or do anything illegal. Review the rules and obligations that apply to the documents and services you use.
