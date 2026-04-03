@@ -226,12 +226,6 @@ That usually means the viewer only rendered low-resolution page images. The scri
 
 Expected. This script creates a PDF from images, not from the original PDF text layer.
 
-## Suggested Gist Description
-
-If you upload this version back to the original gist or a new gist, a concise description would be:
-
-`Browser-console script for rebuilding a downloadable PDF from Google Drive viewer blob images, with per-page orientation and size preservation.`
-
 ## Disclaimer
 
 This script is provided for educational and archival use on content you are authorized to access and copy. Review the rules and obligations that apply to the documents and services you use.
